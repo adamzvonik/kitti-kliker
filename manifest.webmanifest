@@ -1,0 +1,19 @@
+{
+  "name": "Kitti Kliker",
+  "short_name": "Kitti",
+  "description": "Click cats, buy cats, fight boss cats.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f9f5ee",
+  "theme_color": "#f4c84a",
+  "icons": [
+    {
+      "src": "assets/soggy.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4c84a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Kitti Kliker" />
+    <title>Kitti Kliker</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/soggy.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" id="app">
+      <button class="easter-cat" id="easterCat" aria-label="Tiny easter egg cat" title="Tiny cat"></button>
+      <button class="music-toggle" id="musicToggle">Music</button>
+      <audio id="musicPlayer" loop preload="auto"></audio>
+      <section class="play-area" aria-label="Kitti Kliker">
+        <div class="stats-bar">
+          <div>
+            <span class="stat-label">Money</span>
+            <strong id="money">$0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Per Click</span>
+            <strong id="perClick">$1</strong>
+          </div>
+          <div>
+            <span class="stat-label">Multiplier</span>
+            <strong id="multiplier">x1</strong>
+          </div>
+          <div>
+            <span class="stat-label">Tuna Cans</span>
+            <strong id="tunaCans">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Rebirths</span>
+            <strong id="rebirths">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Title</span>
+            <strong id="playerTitle">Sleepy Kitten</strong>
+          </div>
+        </div>
+
+        <button class="cat-button" id="catButton" aria-label="Click the cat to earn money">
+          <span class="cat-shadow"></span>
+          <img
+            class="larry-image"
+            src="https://i.kym-cdn.com/photos/images/newsfeed/003/015/906/9ed.png"
+            alt=""
+          />
+          <img class="normal-image" src="assets/normal-cat.jpg" alt="" />
+          <img class="premium-image" src="assets/premium-cat.jpg" alt="" />
+          <img class="golden-image" src="assets/golden-cat.webp" alt="" />
+          <img class="war-image" src="assets/war-cat.jpg" alt="" />
+          <img
+            class="glungus-image"
+            src="https://preview.redd.it/where-did-glungus-originate-from-v0-v88zmc7c16uf1.jpeg?auto=webp&s=6e1c8d36adaa443c832cbd4ae5e2341d43329ee0"
+            alt=""
+          />
+          <img class="emo-image" src="assets/emo-cat.jpg" alt="" />
+          <img
+            class="glorbzorg-image"
+            src="https://media1.tenor.com/m/JhocXY2TYZgAAAAd/alien-meme-cat-funny-cat.gif"
+            alt=""
+          />
+          <img class="soggy-image" src="assets/soggy.png" alt="" />
+          <img class="wetty-image" src="assets/wetty.jpg" alt="" />
+          <img class="boss-image" src="assets/boss-cat.png" alt="" />
+          <span class="cat">
+            <span class="ear left"></span>
+            <span class="ear right"></span>
+            <span class="face">
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="nose"></span>
+              <span class="mouth"></span>
+              <span class="whiskers left"></span>
+              <span class="whiskers right"></span>
+            </span>
+            <span class="tail"></span>
+          </span>
+        </button>
+
+        <div class="stage-boss-health" id="stageBossHealth" aria-live="polite">
+          <div class="stage-boss-health-head">
+            <strong id="stageBossName">Boss Cat</strong>
+            <span id="stageBossHp">0 / 0 HP</span>
+          </div>
+          <div class="stage-boss-track">
+            <span id="stageBossBar"></span>
+          </div>
+        </div>
+
+        <div class="surprise-row" aria-label="Surprise systems">
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Catnip Fever</strong>
+              <span id="catnipMeter">0/100</span>
+            </div>
+            <div class="catnip-track">
+              <span id="catnipBar"></span>
+            </div>
+            <small id="catnipStatus">100 clicks charges x5 fever</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Mystery Chest</strong>
+              <span id="chestStatus">0 opened</span>
+            </div>
+            <button class="mini-button" id="chestButton">No Chest</button>
+            <small>Earn one every 250 clicks.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Combo Rush</strong>
+              <span id="comboRush">Combo x1 (0)</span>
+            </div>
+            <small>Fast clicks stack into a click multiplier.</small>
+            <strong id="jackpotMeter">0/500</strong>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Scratch Card</strong>
+              <span id="scratchStatus">$50,000</span>
+            </div>
+            <button class="mini-button" id="scratchButton">Scratch</button>
+            <small>Random cash, tuna, boosts, or chests.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Slot Machine</strong>
+              <span id="slotStatus">$75,000</span>
+            </div>
+            <button class="mini-button" id="slotButton">Spin Slots</button>
+            <small>Jackpots can drop cash and chests.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Cat Postcards</strong>
+              <span id="postcardStatus">0 cards</span>
+            </div>
+            <button class="mini-button" id="postcardButton">Buy Card</button>
+            <small>Each card gives permanent +1% clicks.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Kitti Weather</strong>
+              <span id="weatherStatus">Sunny</span>
+            </div>
+            <button class="mini-button" id="weatherButton">Roll Weather</button>
+            <small>Random 60 second click weather.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Nap Time</strong>
+              <span id="napStatus">Claim $0</span>
+            </div>
+            <button class="mini-button" id="napButton">Take Nap</button>
+            <small>Free cash every 5 minutes.</small>
+          </section>
+
+          <section class="surprise-panel">
+            <div class="surprise-head">
+              <strong>Panic Meow</strong>
+              <span id="panicStatus">10 tuna</span>
+            </div>
+            <button class="mini-button" id="panicButton">Panic</button>
+            <small>Spend tuna for fever and a chest.</small>
+          </section>
+        </div>
+
+        <div class="combo" id="combo">Click the cat</div>
+        <div class="achievement-popup" id="achievementPopup" aria-live="polite"></div>
+      </section>
+
+      <aside class="shop" aria-label="Upgrade shop">
+        <div class="shop-header">
+          <div>
+            <p class="eyebrow">Shop</p>
+            <h1>Kitti Kliker</h1>
+          </div>
+          <button class="icon-button" id="resetButton" aria-label="Reset progress" title="Reset progress">↻</button>
+        </div>
+
+        <div class="upgrade-list">
+          <button class="upgrade" id="multiplierButton">
+            <span>
+              <strong>Buy Multiplier</strong>
+              <small>Double your money from every cat click. Max level 30.</small>
+            </span>
+            <span class="price" id="multiplierCost">$25</span>
+          </button>
+
+          <button class="upgrade" id="treatButton">
+            <span>
+              <strong>Fancy Treats</strong>
+              <small>Double your click money for 30 seconds.</small>
+            </span>
+            <span class="price" id="treatCost">$120</span>
+          </button>
+
+          <button class="upgrade" id="glorbzorgCatButton">
+            <span>
+              <strong>Glorbzorg</strong>
+              <small>Glorb, an alyen that krash landed on earf.</small>
+            </span>
+            <span class="price" id="glorbzorgCatCost">$1,000,000,000,000</span>
+          </button>
+
+          <button class="upgrade" id="catUpgradeButton">
+            <span>
+              <strong>Buy Cat</strong>
+              <small>Adopt a premium cat for a permanent 1.5x multiplier.</small>
+            </span>
+            <span class="price" id="catUpgradeCost">$10,000</span>
+          </button>
+
+          <button class="upgrade" id="emoCatButton">
+            <span>
+              <strong>Emo Y2K Cat</strong>
+              <small>Unlock eyeliner energy for a permanent 3.5x multiplier.</small>
+            </span>
+            <span class="price" id="emoCatCost">$500,000</span>
+          </button>
+
+          <button class="upgrade" id="goldenCatButton">
+            <span>
+              <strong>Golden Cat</strong>
+              <small>Unlock a golden cat for a permanent 5x multiplier.</small>
+            </span>
+            <span class="price" id="goldenCatCost">$500,000</span>
+          </button>
+
+          <button class="upgrade" id="warCatButton">
+            <span>
+              <strong>War Cat</strong>
+              <small>Put a tank on its head for a permanent 10x multiplier.</small>
+            </span>
+            <span class="price" id="warCatCost">$100,000,000</span>
+          </button>
+
+          <button class="upgrade" id="larryCatButton">
+            <span>
+              <strong>Evil Larry</strong>
+              <small>A myth. A legend. Costs clicks and grants a permanent 100x multiplier.</small>
+            </span>
+            <span class="price" id="larryCatCost">3,000 clicks</span>
+          </button>
+
+          <button class="upgrade" id="wettyCatButton">
+            <span>
+              <strong>Wetty</strong>
+              <small>Freshly soaked. Costs clicks and grants a permanent 15x multiplier.</small>
+            </span>
+            <span class="price" id="wettyCatCost">1,500 clicks</span>
+          </button>
+
+          <button class="upgrade" id="glungusCatButton">
+            <span>
+              <strong>Glungus</strong>
+              <small>The impossible cat. Grants a permanent 22.5x multiplier.</small>
+            </span>
+            <span class="price" id="glungusCatCost">$10,000,000,000</span>
+          </button>
+        </div>
+
+        <div class="ledger">
+          <div>
+            <span class="stat-label">Cats Clicked</span>
+            <strong id="clicks">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Treat Boost</span>
+            <strong id="boostTimer">Ready</strong>
+          </div>
+          <div>
+            <span class="stat-label">Rebirth Multi</span>
+            <strong id="rebirthBoost">x1</strong>
+          </div>
+        </div>
+
+        <button class="upgrade rebirth-button" id="rebirthButton">
+          <span>
+            <strong>Rebirth</strong>
+            <small>Reset the run, unlock tuna and Kittey Goods, gain permanent 2x power.</small>
+          </span>
+          <span class="price" id="rebirthCost">$100,000,000,000</span>
+        </button>
+
+        <section class="achievements" aria-label="Click achievements">
+          <div class="achievements-header">
+            <span class="stat-label">Achievements</span>
+            <strong id="achievementCount">0/7</strong>
+          </div>
+          <div class="achievement-list" id="achievementList"></div>
+        </section>
+
+        <section class="feature-panel boss-panel" id="bossPanel" aria-label="Boss cat fight">
+          <img class="boss-cat-art" id="bossCatArt" src="assets/boss-cat.png" alt="Boss cat" />
+          <div class="feature-head">
+            <div>
+              <span class="stat-label">Boss Fight</span>
+              <strong id="bossName">No Boss</strong>
+            </div>
+            <button class="mini-button" id="bossButton">Summon Boss Cat</button>
+          </div>
+          <div class="boss-track">
+            <span id="bossBar"></span>
+          </div>
+          <div class="feature-row">
+            <span id="bossHp">0 defeated</span>
+            <strong id="bossReward">Reward: $0</strong>
+          </div>
+        </section>
+
+        <section class="feature-grid" aria-label="Extra cat systems">
+          <div class="feature-panel">
+            <span class="stat-label">Cat Eggs</span>
+            <strong>25 tuna hatch</strong>
+            <p id="eggResult">Hatch for money, tuna, or tiny multiplier luck.</p>
+            <button class="mini-button" id="eggButton">Hatch Egg</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Daily Wheel</span>
+            <strong>Daily prize</strong>
+            <p id="wheelStatus">Ready to spin</p>
+            <button class="mini-button" id="wheelButton">Spin Wheel</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Cat Fusion</span>
+            <strong>Golden Sadboi</strong>
+            <p id="fusionStatus">Needs Golden Cat, Emo Y2K, 50 tuna</p>
+            <button class="mini-button" id="fusionButton">Fuse Cats</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Prestige Shop</span>
+            <strong><span id="kittiGoods">Locked</span> Kitti Goods</strong>
+            <button class="mini-button" id="prestigeClickButton">3 Goods: +50% clicks</button>
+            <button class="mini-button" id="prestigeTunaButton">2 Goods: +1 tuna exchange</button>
+            <button class="mini-button" id="prestigeBossButton">2 Goods: bigger boss rewards</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Auto Paw</span>
+            <strong id="autoPawStatus">Level 0 - $250,000</strong>
+            <p>Clicks and earns money by itself every second.</p>
+            <button class="mini-button" id="autoPawButton">Buy Auto Paw</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Kitti Bank</span>
+            <strong id="bankStatus">Level 0 - $1,000,000</strong>
+            <p>Generates passive money from your current power.</p>
+            <button class="mini-button" id="bankButton">Upgrade Bank</button>
+          </div>
+
+          <div class="feature-panel">
+            <span class="stat-label">Tuna Magnet</span>
+            <strong id="tunaMagnetStatus">Level 0 - 20 tuna</strong>
+            <p>Adds extra tuna whenever you exchange clicks.</p>
+            <button class="mini-button" id="tunaMagnetButton">Buy Magnet</button>
+          </div>
+        </section>
+
+        <section class="feature-panel" aria-label="Kitti Citi jobs">
+          <div class="feature-head">
+            <div>
+              <span class="stat-label">Kitti Citi Jobs</span>
+              <strong>Claimable quests</strong>
+            </div>
+          </div>
+          <div class="mini-task-list" id="cityJobsList"></div>
+        </section>
+
+        <div class="stand-row">
+          <section class="scene-shop-stand" aria-label="Cat shop stand">
+            <div class="scene-awning">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="scene-stall">
+              <div class="stall-sign">KITTI SHOP</div>
+              <img class="shopkeeper" src="assets/shopkeeper.jpg" alt="Shop keeper cat" />
+              <div class="stall-window">
+                <button class="enter-shop-sign" id="enterShopButton">Enter Kitteys Shop</button>
+              </div>
+              <div class="exchange-spacer" aria-hidden="true"></div>
+              <div class="stall-counter"></div>
+            </div>
+            <div class="stall-legs">
+              <span></span>
+              <span></span>
+            </div>
+          </section>
+
+          <section class="scene-shop-stand tuna-stand" aria-label="Tuna exchange booth">
+            <div class="exchange-bubble" id="exchangeBubble">plesur doink biznis</div>
+            <div class="scene-awning">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="scene-stall">
+              <div class="stall-sign">TUNA EX</div>
+              <img class="shopkeeper tuna-keeper" src="assets/shopkeeper.jpg" alt="Tuna exchange keeper cat" />
+              <div class="stall-window tuna-window">
+                <span class="tuna-can" aria-hidden="true"></span>
+                <span class="stall-item tuna-rate">10</span>
+                <span class="stall-item tuna-label">can</span>
+              </div>
+              <button class="exchange-button" id="exchangeTunaButton">Exchange Clicks</button>
+              <div class="stall-counter"></div>
+            </div>
+            <div class="stall-legs">
+              <span></span>
+              <span></span>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <section class="shop-screen" id="shopScreen" aria-label="Kitti Shop">
+        <div class="shop-screen-header">
+          <div>
+            <span class="stat-label">Kitti Shop</span>
+            <h2>Kittey Goods</h2>
+          </div>
+          <button class="back-button" id="closeShopButton" aria-label="Back to clicker">Back</button>
+        </div>
+        <div class="shop-screen-grid" id="shopScreenGrid">
+          <button class="upgrade kitti-good" id="yarnButton">
+            <span>
+              <strong>Yarn Ball</strong>
+              <small>Trade tuna for a quick cash burst.</small>
+            </span>
+            <span class="price" id="yarnCost">1 tuna</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="fishButton">
+            <span>
+              <strong>Fish Snack</strong>
+              <small>A snack that adds money equal to 25 clicks.</small>
+            </span>
+            <span class="price" id="fishCost">3 tuna</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="bellButton">
+            <span>
+              <strong>Lucky Bell</strong>
+              <small>Permanent tiny multiplier boost.</small>
+            </span>
+            <span class="price" id="bellCost">8 tuna</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="couponButton">
+            <span>
+              <strong>Coupon Stack</strong>
+              <small>Cut multiplier upgrade price by 10%.</small>
+            </span>
+            <span class="price" id="couponCost">5 tuna</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="larryShopButton">
+            <span>
+              <strong>Evil Larry</strong>
+              <small>The myth. The legend. Times 100 multi.</small>
+            </span>
+            <span class="price" id="larryShopCost">3,000 clicks</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="wettyShopButton">
+            <span>
+              <strong>Wetty</strong>
+              <small>Freshly soaked. Times 15 multi.</small>
+            </span>
+            <span class="price" id="wettyShopCost">1,500 clicks</span>
+          </button>
+
+          <button class="upgrade kitti-good" id="soggyCatButton">
+            <span>
+              <strong>Soggy</strong>
+              <small>Ultra rare wet-cat icon. Grants a permanent 75x multiplier.</small>
+            </span>
+            <span class="price" id="soggyCatCost">$5,000,000,000,000</span>
+          </button>
+        </div>
+      </section>
+      <section class="citi-screen" id="citiScreen" aria-label="Kitti Citi">
+        <div class="citi-header">
+          <div>
+            <span class="stat-label">Travel Zone</span>
+            <h2>Kitti Citi</h2>
+          </div>
+          <button class="back-button" id="citiBackButton" aria-label="Back to clicker">Back</button>
+        </div>
+        <div class="citi-grid" id="citiGrid" tabindex="0" aria-label="Kitti Citi walking area">
+          <img
+            class="citi-player"
+            id="citiPlayer"
+            src="assets/kitti-citi-player.png"
+            alt="Kitti Citi player"
+          />
+          <article class="citi-booth" data-citi-shop="normal" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/normal-cat.jpg" alt="Normal cat" />
+            <strong>Normal Cat</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="premium" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/premium-cat.jpg" alt="Premium cat" />
+            <strong>Premium Cat</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="golden" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/golden-cat.webp" alt="Golden cat" />
+            <strong>Golden Cat</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="emo" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/emo-cat.jpg" alt="Emo Y2K cat" />
+            <strong>Emo Y2K</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="war" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/war-cat.jpg" alt="War cat" />
+            <strong>War Cat</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="wetty" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/wetty.jpg" alt="Wetty" />
+            <strong>Wetty</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="soggy" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="assets/soggy.png" alt="Soggy" />
+            <strong>Soggy</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="larry" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="https://i.kym-cdn.com/photos/images/newsfeed/003/015/906/9ed.png" alt="Evil Larry" />
+            <strong>Evil Larry</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="glungus" tabindex="0">
+            <div class="citi-awning"></div>
+            <img
+              src="https://preview.redd.it/where-did-glungus-originate-from-v0-v88zmc7c16uf1.jpeg?auto=webp&s=6e1c8d36adaa443c832cbd4ae5e2341d43329ee0"
+              alt="Glungus"
+            />
+            <strong>Glungus</strong>
+          </article>
+          <article class="citi-booth" data-citi-shop="glorbzorg" tabindex="0">
+            <div class="citi-awning"></div>
+            <img src="https://media1.tenor.com/m/JhocXY2TYZgAAAAd/alien-meme-cat-funny-cat.gif" alt="Glorbzorg" />
+            <strong>Glorbzorg</strong>
+          </article>
+          <aside class="citi-shop-panel" id="citiShopPanel" aria-live="polite">
+            <button class="citi-shop-close" id="citiShopClose" aria-label="Close booth shop">X</button>
+            <img id="citiShopImage" src="assets/normal-cat.jpg" alt="" />
+            <div>
+              <span class="stat-label">Booth Shop</span>
+              <h3 id="citiShopTitle">Normal Cat Shop</h3>
+              <p id="citiShopDescription">Click a booth to shop.</p>
+            </div>
+            <div class="citi-shop-items" id="citiShopItems"></div>
+          </aside>
+        </div>
+      </section>
+      <nav class="bottom-tabs" aria-label="Game tabs">
+        <button class="bottom-tab active" id="clickerTab">Kitti Kliker</button>
+        <button class="bottom-tab" id="kittiCitiTab">Kitti Citi</button>
+      </nav>
+    </main>
+    <script defer src="src/main.js"></script>
+  </body>
+</html>
