@@ -1,4 +1,4 @@
-const cacheName = "kitti-kliker-mobile-v1";
+const cacheName = "kitti-kliker-mobile-v2";
 const coreAssets = [
   "./",
   "./index.html",

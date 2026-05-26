@@ -1,0 +1,12 @@
+Cat theme filenames expected by the game:
+
+normal cat: local-forecast-elevator.mp3
+premium cat: oiia-oiia.mp3
+golden cat: golden-theme.mp3 (Ay mi Gatito Miau Miau)
+emo y2k cat: emo-y2k-theme.mp3 (Ai Dua Em Ve)
+war cat: your-best-nightmare.mp3
+evil larry: rip-and-tear.mp3
+wetty: wetty-theme.mp3 (Battle Against A True Hero)
+glungus: final-battle.mp3
+glorbzorg: no theme
+soggy: soggy-theme.mp3 (Dion Timmer - TIDAL WAVE)
